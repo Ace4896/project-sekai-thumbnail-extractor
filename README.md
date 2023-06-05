@@ -1,6 +1,6 @@
-# Project Sekai Card Tracker
+# Project Sekai Thumbnail Extractor
 
-A small tool for tracking character cards from Project Sekai.
+A small tool for extracting Project Sekai card thumbnails from the characters list.
 
 ## Requirements
 
