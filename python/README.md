@@ -1,11 +1,13 @@
 # Card Thumbnail Extractor
 
-Test app for extracting card thumbnails from a list of characters.
+In this folder are some Jupyter Notebooks showing the approach:
 
-## Usage
+- [`character-box`](./character-box.ipynb) - Getting the character box from a screenshot of the character list
+- [`thumbnail-search`](./thumbnail-search.ipynb) - Extracting individual card thumbnails from the character list
 
-Some initial setup is required to get this working.
+To run these notebooks:
 
-- Install Python 3.11+ (may work on older versions, but not sure if it works)
-- [Create a virtual environment](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment) and activate it
+- Install Python 3.11 or higher (may work on older versions, but not sure if it'll work)
+- [Create a virtual environment and activate it](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment)
 - Install dependencies using `pip install -r requirements.txt`
+- Run `jupyter notebook`
