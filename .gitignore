@@ -1,0 +1,5 @@
+# Production Build Output
+dist
+
+# NodeJS
+node_modules
