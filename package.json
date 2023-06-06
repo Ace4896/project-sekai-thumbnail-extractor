@@ -1,7 +1,7 @@
 {
-  "name": "vite-template-solid",
-  "version": "0.0.0",
-  "description": "",
+  "name": "project-sekai-thumbnail-extractor",
+  "version": "0.1.0",
+  "description": "A small tool for extracting Project Sekai card thumbnails from the characters list.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
