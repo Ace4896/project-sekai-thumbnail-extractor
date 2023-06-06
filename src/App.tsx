@@ -1,7 +1,7 @@
-import { Component, For } from "solid-js";
+import { Component, For, Signal, createSignal } from "solid-js";
 
 import { Theme, activeTheme, setTheme } from "./ts/colorModes";
-import ThumbnailExtractor from "./ThumbnailExtractor";
+import { extractFromScreenshot } from "./ts/extractor";
 
 const availableThemes = [
   { value: Theme.Auto, text: "System", icon: "bi-circle-half" },
@@ -10,6 +10,8 @@ const availableThemes = [
 ];
 
 const App: Component = () => {
+  const [imageSource, setImageSource]: Signal<string> = createSignal();
+
   return (
     <>
       <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4">
@@ -67,7 +69,28 @@ const App: Component = () => {
       </nav>
 
       <div class="container-md">
-        <ThumbnailExtractor />
+        <div class="mb-4">
+          <label for="inputImgSource" class="form-label">
+            Load screenshot of character list...
+          </label>
+          <input
+            id="inputImgSource"
+            class="form-control"
+            type="file"
+            onchange={(e) =>
+              setImageSource(URL.createObjectURL(e.target.files[0]))
+            }
+          />
+        </div>
+
+        <img
+          id="imgSource"
+          class="img-fluid mb-4"
+          src={imageSource()}
+          onload={(e) => extractFromScreenshot(e.target as HTMLImageElement)}
+        />
+
+        <canvas id="canvasOutput" class="img-fluid"></canvas>
       </div>
     </>
   );
