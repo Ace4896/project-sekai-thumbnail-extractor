@@ -2,8 +2,9 @@
 import "bootstrap/scss/bootstrap.scss";
 import "bootstrap-icons/font/bootstrap-icons.scss";
 
-import { render } from "solid-js/web";
 import "bootstrap";
+
+import { render } from "solid-js/web";
 
 import App from "./App";
 

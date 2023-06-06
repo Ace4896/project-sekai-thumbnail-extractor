@@ -1,6 +1,7 @@
 import { Component, For } from "solid-js";
 
-import { Theme, activeTheme, setTheme } from "./colorModes";
+import { Theme, activeTheme, setTheme } from "./ts/colorModes";
+import ThumbnailExtractor from "./ThumbnailExtractor";
 
 const availableThemes = [
   { value: Theme.Auto, text: "System", icon: "bi-circle-half" },
@@ -11,7 +12,7 @@ const availableThemes = [
 const App: Component = () => {
   return (
     <>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4">
         <div class="container-md">
           <span class="navbar-brand mb-0 h1">
             Project Sekai Thumbnail Extractor
@@ -64,6 +65,10 @@ const App: Component = () => {
           </ul>
         </div>
       </nav>
+
+      <div class="container-md">
+        <ThumbnailExtractor />
+      </div>
     </>
   );
 };
