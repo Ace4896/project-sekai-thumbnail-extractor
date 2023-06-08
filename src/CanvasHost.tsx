@@ -6,21 +6,23 @@ interface CanvasHostProps {
 }
 
 const CanvasHost: Component<CanvasHostProps> = (props: CanvasHostProps) => {
+  const [localProps, otherProps] = splitProps(props, ["imageData"]);
+
   let canvas: HTMLCanvasElement;
 
   onMount(() => {
-    if (props.imageData) {
-      canvas.width = props.imageData.width;
-      canvas.height = props.imageData.height;
+    if (localProps.imageData) {
+      canvas.width = localProps.imageData.width;
+      canvas.height = localProps.imageData.height;
       
       const ctx = canvas.getContext("2d");
-      ctx.putImageData(props.imageData, 0, 0);
+      ctx.putImageData(localProps.imageData, 0, 0);
     }
   });
 
   return (
     <>
-      <canvas ref={canvas} {...props}></canvas>
+      <canvas ref={canvas} {...otherProps}></canvas>
     </>
   )
 };
