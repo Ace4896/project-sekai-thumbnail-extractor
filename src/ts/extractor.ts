@@ -16,7 +16,7 @@ function median(numbers: number[]): number {
   return sorted[middle];
 }
 
-function extractFromScreenshot(imgElement: HTMLImageElement): cv.Rect[] {
+function extractFromScreenshot(imgElement: HTMLImageElement): any[] {
   const imgList = cv.imread(imgElement);
 
   // Convert to grayscale
@@ -27,10 +27,10 @@ function extractFromScreenshot(imgElement: HTMLImageElement): cv.Rect[] {
   const characterBox = extractCharacterBox(imgListGray);
   const imgBox = imgList.roi(characterBox);
   const imgBoxGray = imgListGray.roi(characterBox);
-  cv.imshow("canvasOutput", imgBox);
 
   // Extract thumbnail boxes
   const thumbnailBoxes = extractThumbnailBoxes(imgBoxGray);
+  console.log(thumbnailBoxes);
 
   // Clear intermediate resources
   imgList.delete();
@@ -38,7 +38,6 @@ function extractFromScreenshot(imgElement: HTMLImageElement): cv.Rect[] {
   imgBox.delete();
   imgBoxGray.delete();
 
-  // return thumbnailBoxes;
   return [];
 }
 
@@ -110,24 +109,30 @@ function extractThumbnailBoxes(imgBoxGray: cv.Mat): cv.Rect[] {
 
   // Find external contours - this avoids capturing the contents of the thumbnails
   // This has to be done twice, as the first set of contours are usually disjointed
-  const imgBoxContours = cv.Mat.zeros(imgBoxGray.rows, imgBoxGray.cols, imgBoxGray.type());
+  const imgBoxContours = cv.Mat.zeros(imgBoxThresholded.size(), imgBoxThresholded.type());
   const contoursBox1 = new cv.MatVector();
   const hierarchyBox1 = new cv.Mat();
   cv.findContours(imgBoxThresholded, contoursBox1, hierarchyBox1, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
 
   const contoursCount1 = getMatVectorSize(contoursBox1);
+
   for (let i = 0; i < contoursCount1; i++) {
     const contour = contoursBox1.get(i);
     const boundingRect = cv.boundingRect(contour);
 
-    // TODO: The colour parameter isn't correct - doesn't seem to accept 255
+    // NOTE:
+    // - Couldn't get the overload that uses in cv.Rect to work
+    // - For the colour, it looks like we have to specify the values for all channels
     cv.rectangle(
-      imgBoxContours,
-      boundingRect,
-      255,
+      imgBoxContours, 
+      new cv.Point(boundingRect.x, boundingRect.y),
+      new cv.Point(boundingRect.x + boundingRect.width, boundingRect.y + boundingRect.height),
+      new cv.Scalar(255, 255, 255),
       -1
     );
   }
+
+  cv.imshow("canvasOutput", imgBoxContours);
 
   const contoursBox2 = new cv.MatVector();
   const hierarchyBox2 = new cv.Mat();
