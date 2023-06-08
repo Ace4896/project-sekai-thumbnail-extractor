@@ -2,6 +2,7 @@ import { Component, For, Signal, createSignal } from "solid-js";
 
 import { Theme, activeTheme, setTheme } from "./ts/colorModes";
 import { extractFromScreenshot } from "./ts/extractor";
+import CanvasHost from "./CanvasHost";
 
 const availableThemes = [
   { value: Theme.Auto, text: "System", icon: "bi-circle-half" },
@@ -11,6 +12,12 @@ const availableThemes = [
 
 const App: Component = () => {
   const [imageSource, setImageSource]: Signal<string> = createSignal();
+  const [thumbnailImages, setThumbnailImages]: Signal<ImageData[]> = createSignal([]);
+
+  const extractThumbnailImages = (imgElement: HTMLImageElement) => {
+    const extractedThumbnailImages = extractFromScreenshot(imgElement);
+    setThumbnailImages(extractedThumbnailImages);
+  };
 
   return (
     <>
@@ -87,10 +94,16 @@ const App: Component = () => {
           id="imgSource"
           class="img-fluid mb-4"
           src={imageSource()}
-          onload={(e) => extractFromScreenshot(e.target as HTMLImageElement)}
+          onload={(e) => extractThumbnailImages(e.target as HTMLImageElement)}
         />
 
-        <canvas id="canvasOutput" class="img-fluid"></canvas>
+        <canvas id="canvasOutput" style="display: none" class="img-fluid" />
+
+        <For each={thumbnailImages()}>
+          {(thumbnailImage) => (
+            <CanvasHost class="img-fluid" imageData={thumbnailImage} />
+          )}
+        </For>
       </div>
     </>
   );

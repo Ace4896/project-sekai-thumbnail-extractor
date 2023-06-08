@@ -32,15 +32,29 @@ function extractFromScreenshot(imgElement: HTMLImageElement): ImageData[] {
   // ImageData requires the data to be in RGBA format as Uint8
   // The data we've loaded is already in BGRA format as Uint8, so just need to swap the channels
   const imgBox = imgList.roi(characterBox);
-  const imgBoxRgba = new cv.Mat(imgBox.size(), imgBox.type());
-  cv.cvtColor(imgBox, imgBoxRgba, cv.COLOR_BGR2RGBA);
+  // const imgBoxRgba = new cv.Mat(imgBox.size(), imgBox.type());
+  // cv.cvtColor(imgBox, imgBoxRgba, cv.COLOR_BGR2RGBA);
 
-  const thumbnailImages = [];
+  const thumbnailImages: ImageData[] = [];
+  const canvasOutput = document.getElementById("canvasOutput") as HTMLCanvasElement;
+  const canvasCtx = canvasOutput.getContext("2d");
 
   for (const thumbnailBox of thumbnailBoxes) {
     const imgThumbnail = imgBox.roi(thumbnailBox);
-    const thumbnailImage = new ImageData(new Uint8ClampedArray(imgThumbnail.data), imgThumbnail.cols, imgThumbnail.rows);
-    thumbnailImages.push(thumbnailImage);
+
+    // TODO: Can't seem to get the conversion to ImageData working...
+    // - cv.imshow(imgThumbnail) is fine
+    // - ctx.putImageData(imageData, 0, 0) has garbled output
+    // - Converting imageData back to cv.Mat, then using cv.imshow() also has garbled output
+    //
+    // The converted data is the same, so not sure what's wrong
+    // For now, I'm working around this by rendering to a hidden canvas, then re-retrieving the image data
+    // const imageData = new ImageData(new Uint8ClampedArray(imgThumbnail.data), imgThumbnail.cols, imgThumbnail.rows);
+
+    cv.imshow(canvasOutput, imgThumbnail);
+    const imageData = canvasCtx.getImageData(0, 0, thumbnailBox.width, thumbnailBox.height);
+
+    thumbnailImages.push(imageData);
     imgThumbnail.delete();
   }
 
@@ -50,7 +64,7 @@ function extractFromScreenshot(imgElement: HTMLImageElement): ImageData[] {
   imgBoxGray.delete();
 
   imgBox.delete();
-  imgBoxRgba.delete();
+  // imgBoxRgba.delete();
 
   return thumbnailImages;
 }
