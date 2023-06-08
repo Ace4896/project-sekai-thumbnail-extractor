@@ -16,29 +16,43 @@ function median(numbers: number[]): number {
   return sorted[middle];
 }
 
-function extractFromScreenshot(imgElement: HTMLImageElement): any[] {
+function extractFromScreenshot(imgElement: HTMLImageElement): ImageData[] {
   const imgList = cv.imread(imgElement);
 
   // Convert to grayscale
   const imgListGray = new cv.Mat();
   cv.cvtColor(imgList, imgListGray, cv.COLOR_BGR2GRAY);
   
-  // Extract character box
+  // Extract character box and thumbnail boxes
   const characterBox = extractCharacterBox(imgListGray);
-  const imgBox = imgList.roi(characterBox);
   const imgBoxGray = imgListGray.roi(characterBox);
-
-  // Extract thumbnail boxes
   const thumbnailBoxes = extractThumbnailBoxes(imgBoxGray);
-  console.log(thumbnailBoxes);
+
+  // Generate image data from thumbnail boxes
+  // ImageData requires the data to be in RGBA format as Uint8
+  // The data we've loaded is already in BGRA format as Uint8, so just need to swap the channels
+  const imgBox = imgList.roi(characterBox);
+  const imgBoxRgba = new cv.Mat(imgBox.size(), imgBox.type());
+  cv.cvtColor(imgBox, imgBoxRgba, cv.COLOR_BGR2RGBA);
+
+  const thumbnailImages = [];
+
+  for (const thumbnailBox of thumbnailBoxes) {
+    const imgThumbnail = imgBox.roi(thumbnailBox);
+    const thumbnailImage = new ImageData(new Uint8ClampedArray(imgThumbnail.data), imgThumbnail.cols, imgThumbnail.rows);
+    thumbnailImages.push(thumbnailImage);
+    imgThumbnail.delete();
+  }
 
   // Clear intermediate resources
   imgList.delete();
   imgListGray.delete();
-  imgBox.delete();
   imgBoxGray.delete();
 
-  return [];
+  imgBox.delete();
+  imgBoxRgba.delete();
+
+  return thumbnailImages;
 }
 
 function extractCharacterBox(imgListGray: cv.Mat): cv.Rect {
@@ -131,8 +145,6 @@ function extractThumbnailBoxes(imgBoxGray: cv.Mat): cv.Rect[] {
       -1
     );
   }
-
-  cv.imshow("canvasOutput", imgBoxContours);
 
   const contoursBox2 = new cv.MatVector();
   const hierarchyBox2 = new cv.Mat();
