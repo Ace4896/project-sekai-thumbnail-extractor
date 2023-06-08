@@ -177,6 +177,9 @@ function extractThumbnailBoxes(imgBoxGray: cv.Mat): cv.Rect[] {
   const lengthThreshold = 0.9 * median(thumbnailBoundingBoxes.map(rect => rect.width));
   thumbnailBoundingBoxes = thumbnailBoundingBoxes.filter(rect => rect.width > lengthThreshold && rect.height > lengthThreshold);
 
+  // Detected bounding boxes are in reverse order, flip array around
+  thumbnailBoundingBoxes.reverse();
+
   // Release intermediate resources
   imgBoxThresholded.delete();
   
