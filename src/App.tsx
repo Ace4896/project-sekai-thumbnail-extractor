@@ -90,13 +90,19 @@ const App: Component = () => {
           />
         </div>
 
-        <img
-          id="imgSource"
-          class="img-fluid mb-4"
-          src={imageSource()}
-          onload={(e) => extractThumbnailImages(e.target as HTMLImageElement)}
-        />
-
+        {/*
+          NOTE: It looks like the size of the image element affects the size of the extracted thumbnails
+          It may be worth using a canvas to avoid this
+        */}
+        <div class="container-md overflow-scroll">
+          <img
+            id="imgSource"
+            class="mb-4"
+            src={imageSource()}
+            onload={(e) => extractThumbnailImages(e.target as HTMLImageElement)}
+          />
+        </div>
+        
         <canvas id="canvasOutput" style="display: none" class="img-fluid" />
 
         <For each={thumbnailImages()}>
