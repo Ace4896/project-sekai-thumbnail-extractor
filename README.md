@@ -48,4 +48,4 @@ The main image processing is handled by OpenCV, and can be summarised into two m
   - Calculate the bounding boxes for each contour, only retaining ones that are square-ish
   - Crop each card thumbnail from the card box
 
-In the [`python`](./python/README.md) folder, you can find some Jupyter Notebooks which demonstrate the approach in more detail.
+More details can be found in [this repository](https://github.com/Ace4896/project-sekai-thumbnail-matching-notes), which has various Jupyter Notebooks that use this approach.
