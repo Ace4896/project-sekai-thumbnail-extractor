@@ -18,7 +18,7 @@ The tool will extract the individual card thumbnails, which you can right click 
 
 The website demo is made using SolidJS, Bootstrap and OpenCV.js, and is managed using NodeJS and Vite.
 
-- Install NodeJS LTS (tested on v18.16.0)
+- Install NodeJS LTS (tested on v20.11.0)
 - Run `npm install` to download dependencies
 - Use one of the scripts below to use the app:
 
