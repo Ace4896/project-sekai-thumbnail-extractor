@@ -10,16 +10,16 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "sass": "^1.70.0",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.12",
-    "vite-plugin-solid": "^2.8.2"
+    "sass": "^1.74.1",
+    "typescript": "^5.4.4",
+    "vite": "^5.2.8",
+    "vite-plugin-solid": "^2.10.2"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "@techstark/opencv-js": "^4.9.0-release.2",
-    "bootstrap": "^5.3.2",
+    "@techstark/opencv-js": "^4.9.0-release.3",
+    "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
-    "solid-js": "^1.8.11"
+    "solid-js": "^1.8.16"
   }
 }
